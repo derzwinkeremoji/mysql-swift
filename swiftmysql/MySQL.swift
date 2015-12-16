@@ -17,6 +17,8 @@ class MySQLConnection {
         case PrepareStatementFailed(mysqlErrorCode: UInt32, mysqlErrorMessage: String)
         case BindStatementFailed(mysqlErrorCode: UInt32, mysqlErrorMessage: String)
         case ExecuteStatementFailed(mysqlErrorCode: UInt32, mysqlErrorMessage: String)
+        case UnsupportedTypeInBind
+        case UnsupportedTypeInResult(fieldName: String, type: enum_field_types)
     }
     
     let conn = mysql_init(nil)
@@ -26,16 +28,23 @@ class MySQLConnection {
             throw MySQLError.ConnectFailed
         }
     }
-    
-    /** 
-     Simple query method
-    */
-    func query(sql: String) throws -> MySQLResult? {
+
+    /**
+     Execute SQL, do not expect a result
+     */
+    func execute(sql: String) throws {
         let result = mysql_query(conn, sql)
         if (result != 0) {
             let errorMessage = String.fromCString(mysql_error(conn)) ?? "Unknown error"
             throw MySQLError.QueryFailed(mysqlErrorCode: UInt32(result), mysqlErrorMessage: errorMessage)
         }
+    }
+
+    /**
+     Simple query method
+    */
+    func query(sql: String) throws -> MySQLResult? {
+        try execute(sql);
         
         if (mysql_field_count(conn) > 0) {
             let mysql_res = mysql_store_result(conn)
@@ -71,19 +80,34 @@ class MySQLConnection {
         var bindParams = [MYSQL_BIND]()
         for paramIdx in 0..<params.count {
             let paramObj = params[paramIdx]
+            var bind = MYSQL_BIND()
 
-            if let paramString = paramObj as? String {
-                var bind = MYSQL_BIND()
-
-                bind.buffer_type = MYSQL_TYPE_VARCHAR
-                bind.buffer_length = UInt(paramString.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+            // Useful type mapping documentation
+            // https://dev.mysql.com/doc/refman/5.7/en/c-api-prepared-statement-type-codes.html
                 
-                if let cString = paramString.cStringUsingEncoding(NSUTF8StringEncoding) {
-                    bind.buffer = UnsafeMutablePointer<Void>(strdup(cString))
-                }
+            switch (paramObj) {
+                case is String:
+                    let paramString = paramObj as! String
+                    bind.buffer_type = MYSQL_TYPE_VARCHAR
+                    bind.buffer_length = UInt(paramString.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+                    
+                    if let cString = paramString.cStringUsingEncoding(NSUTF8StringEncoding) {
+                        bind.buffer = UnsafeMutablePointer<Void>(strdup(cString))
+                    }
+                    
+                case is Int:
+                    var paramInt64 = Int64(paramObj as! Int)
+                    bind.buffer_type = MYSQL_TYPE_LONGLONG
+                    bind.buffer_length = 8
+                    bind.buffer = UnsafeMutablePointer<Void>(malloc(8))
+                    memcpy(bind.buffer, &paramInt64, 8)
                 
-                bindParams.append(bind)
+                default:
+                    throw MySQLError.UnsupportedTypeInBind
             }
+
+            bindParams.append(bind)
+            free(bind.buffer)
         }
         
         if (mysql_stmt_bind_param(statement, UnsafeMutablePointer<MYSQL_BIND>(bindParams)) != 0) {

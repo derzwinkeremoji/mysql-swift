@@ -18,8 +18,9 @@ class TypesTestCase: XCTestCase {
     let dropTableSQL = "DROP TABLE IF EXISTS test_types"
     
     let createTypesTableSQL = "CREATE  TABLE `test`.`test_types` (" +
-    "`col_autoinc` INT NOT NULL AUTO_INCREMENT ," +
+    "`col_autoinc` BIGINT NOT NULL AUTO_INCREMENT ," +
     "`col_int` INT NULL ," +
+    "`col_bigint` BIGINT NULL ," +
     "`col_varchar64` VARCHAR(64) NULL ," +
     "`col_datetime` DATETIME NULL ," +
     "`col_blob` BLOB NULL ," +
@@ -40,17 +41,30 @@ class TypesTestCase: XCTestCase {
         try! dbconn.query(createTypesTableSQL)
     }
     
-    func testVarchar64() {
+    func testVarchar64() throws {
         let testString = Array(count: 8, repeatedValue: "Hello123").joinWithSeparator("")
         assert(testString.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 64)
         
         try! dbconn.query("INSERT INTO test_types (col_varchar64) VALUES (?)", params: [testString])
         let result = try! dbconn.query("SELECT col_varchar64 FROM test_types")
         assert(result != nil)
-        let row = result?.fetchRow()!
+        let row = try! result?.fetchRow()!
         assert(row != nil)
         if let row = row {
             assert(row["col_varchar64"] as! String == testString)
         }
+    }
+    
+    func testBigInt() throws {
+        let testInt:Int = 42
+        try! dbconn.query("INSERT INTO test_types (col_bigint) VALUES (?)", params: [testInt])
+        let result = try! dbconn.query("SELECT col_varchar64 FROM test_types")
+        assert(result != nil)
+        let row = try! result?.fetchRow()!
+        assert(row != nil)
+        if let row = row {
+            assert(row["col_bigint"] as! Int == testInt)
+        }
+        
     }
 }

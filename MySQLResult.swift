@@ -24,20 +24,28 @@ class MySQLResult {
         mysql_free_result(mysql_res)
     }
     
-    func fetchRow() -> Dictionary<String, AnyObject?>? {
+    func fetchRow() throws -> Dictionary<String, Any?>? {
         let mysql_row = mysql_fetch_row(mysql_res)
         if mysql_row == nil {
             return nil
         }
         
-        var dict = Dictionary<String, AnyObject?>()
+        var dict = Dictionary<String, Any?>()
         
         // Populate the row dictionary
         for fieldIdx in 0..<numFields {
-            let rowdata = mysql_row[fieldIdx]
+            let rowBytes = mysql_row[fieldIdx]
             let field = MySQLField(mysql_field: fields[fieldIdx])
-            print("Field \(field.name) type \(field.type)")
-            dict[field.name] = String.fromCString(rowdata)
+            
+            switch (field.type) {
+                case MYSQL_TYPE_VAR_STRING:
+                    dict[field.name] = String.fromCString(rowBytes)
+                case MYSQL_TYPE_LONGLONG:
+                    let int64value = UnsafePointer<Int64>(rowBytes).memory
+                    dict[field.name] = int64value
+                default:
+                    throw MySQLConnection.MySQLError.UnsupportedTypeInResult(fieldName: field.name, type: field.type)
+            }
         }
         
         return dict
