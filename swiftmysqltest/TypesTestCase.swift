@@ -41,7 +41,7 @@ class TypesTestCase: XCTestCase {
         try! dbconn.query(createTypesTableSQL)
     }
     
-    func testVarchar64() throws {
+    func testVarchar64() {
         let testString = Array(count: 8, repeatedValue: "Hello123").joinWithSeparator("")
         assert(testString.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 64)
         
@@ -55,15 +55,15 @@ class TypesTestCase: XCTestCase {
         }
     }
     
-    func testBigInt() throws {
-        let testInt:Int = 42
-        try! dbconn.query("INSERT INTO test_types (col_bigint) VALUES (?)", params: [testInt])
-        let result = try! dbconn.query("SELECT col_varchar64 FROM test_types")
+    func testBigInt() {
+        let testInt:Int64 = 42
+        try! dbconn.query("INSERT INTO test_types (col_bigint) VALUES (?)", params: [Int(testInt)])
+        let result = try! dbconn.query("SELECT col_bigint FROM test_types")
         assert(result != nil)
         let row = try! result?.fetchRow()!
         assert(row != nil)
         if let row = row {
-            assert(row["col_bigint"] as! Int == testInt)
+            assert(row["col_bigint"] as! Int64 == testInt)
         }
         
     }

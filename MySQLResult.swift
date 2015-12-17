@@ -36,12 +36,13 @@ class MySQLResult {
         for fieldIdx in 0..<numFields {
             let rowBytes = mysql_row[fieldIdx]
             let field = MySQLField(mysql_field: fields[fieldIdx])
-            
+        
             switch (field.type) {
                 case MYSQL_TYPE_VAR_STRING:
                     dict[field.name] = String.fromCString(rowBytes)
                 case MYSQL_TYPE_LONGLONG:
-                    let int64value = UnsafePointer<Int64>(rowBytes).memory
+                    let stringValue = String.fromCString(rowBytes) ?? "0"
+                    let int64value = Int64(stringValue)
                     dict[field.name] = int64value
                 default:
                     throw MySQLConnection.MySQLError.UnsupportedTypeInResult(fieldName: field.name, type: field.type)

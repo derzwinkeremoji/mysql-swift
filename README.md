@@ -13,7 +13,7 @@ classes that connect to MySQL.
 
 ## Current Status
 
-Very early. Lets you connect to the database, and perform queries using String types.
+Very early. Lets you connect to the database, and perform queries using String or Int types.
 
 ## Running
 
@@ -25,7 +25,7 @@ in the usual place (/usr/local/mysql/lib).  Otherwise, it's self-contained.
 ```Swift
 let db = MySQLConnection()
 db.connect("localhost", user: "root", password: "secret", database: "testdb")
-db.query("INSERT INTO foo (field1, field2) VALUES (?, ?)", ["One", "Two"])
+db.query("INSERT INTO foo (field1, field2) VALUES (?, ?)", ["One", 42])
 ```
 
 ```Swift
