@@ -65,6 +65,19 @@ class TypesTestCase: XCTestCase {
         if let row = row {
             assert(row["col_bigint"] as! Int64 == testInt)
         }
-        
+    }
+    
+    func testDate() {
+        let testDate = NSDate()
+        try! dbconn.query("INSERT INTO test_types (col_datetime) VALUES (?)", params: [testDate])
+        let result = try! dbconn.query("SELECT col_datetime FROM test_types")
+        assert(result != nil)
+        let row = try! result?.fetchRow()!
+        assert(row != nil)
+        if let row = row {
+            let retrievedDate = row["col_datetime"] as! NSDate
+            let interval = NSCalendar.currentCalendar().components([NSCalendarUnit.Second], fromDate: testDate, toDate: retrievedDate, options: NSCalendarOptions())
+            assert(interval.second == 0)
+        }
     }
 }

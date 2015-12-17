@@ -37,13 +37,20 @@ class MySQLResult {
             let rowBytes = mysql_row[fieldIdx]
             let field = MySQLField(mysql_field: fields[fieldIdx])
         
+            let stringValue = String.fromCString(rowBytes) ?? ""
+
             switch (field.type) {
                 case MYSQL_TYPE_VAR_STRING:
-                    dict[field.name] = String.fromCString(rowBytes)
+                    dict[field.name] = stringValue
                 case MYSQL_TYPE_LONGLONG:
-                    let stringValue = String.fromCString(rowBytes) ?? "0"
                     let int64value = Int64(stringValue)
                     dict[field.name] = int64value
+                case MYSQL_TYPE_DATETIME:
+                    let dateFmt = NSDateFormatter()
+                    dateFmt.timeZone = NSTimeZone.defaultTimeZone()
+                    dateFmt.dateFormat = "yyyy-MM-dd hh:mm:ss"
+                    dict[field.name] = dateFmt.dateFromString(stringValue)!
+                
                 default:
                     throw MySQLConnection.MySQLError.UnsupportedTypeInResult(fieldName: field.name, type: field.type)
             }

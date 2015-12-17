@@ -63,7 +63,7 @@ class MySQLConnection {
     /**
      Query with paramters: Executed as a prepared statement.
     */
-    func query(sql: String, params: [AnyObject?]) throws -> MySQLResult? {
+    func query(sql: String, params: [Any?]) throws -> MySQLResult? {
         let statement = mysql_stmt_init(conn)
         if statement == nil {
             throw MySQLError.StatementInitFailed
@@ -77,40 +77,9 @@ class MySQLConnection {
             throw MySQLError.PrepareStatementFailed(mysqlErrorCode: UInt32(err), mysqlErrorMessage: errorMessage)
         }
         
-        var bindParams = [MYSQL_BIND]()
-        for paramIdx in 0..<params.count {
-            let paramObj = params[paramIdx]
-            var bind = MYSQL_BIND()
-
-            // Useful type mapping documentation
-            // https://dev.mysql.com/doc/refman/5.7/en/c-api-prepared-statement-type-codes.html
-                
-            switch (paramObj) {
-                case is String:
-                    let paramString = paramObj as! String
-                    bind.buffer_type = MYSQL_TYPE_VARCHAR
-                    bind.buffer_length = UInt(paramString.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
-                    
-                    if let cString = paramString.cStringUsingEncoding(NSUTF8StringEncoding) {
-                        bind.buffer = UnsafeMutablePointer<Void>(strdup(cString))
-                    }
-                    
-                case is Int:
-                    var paramInt64 = Int64(paramObj as! Int)
-                    bind.buffer_type = MYSQL_TYPE_LONGLONG
-                    bind.buffer_length = 8
-                    bind.buffer = UnsafeMutablePointer<Void>(malloc(8))
-                    memcpy(bind.buffer, &paramInt64, 8)
-                
-                default:
-                    throw MySQLError.UnsupportedTypeInBind
-            }
-
-            bindParams.append(bind)
-            free(bind.buffer)
-        }
+        let mysqlBind = try bindParams(params)
         
-        if (mysql_stmt_bind_param(statement, UnsafeMutablePointer<MYSQL_BIND>(bindParams)) != 0) {
+        if (mysql_stmt_bind_param(statement, UnsafeMutablePointer<MYSQL_BIND>(mysqlBind)) != 0) {
             let err = mysql_stmt_errno(statement)
             let errorMessage = String.fromCString(mysql_stmt_error(statement)) ?? "Unknown error"
             throw MySQLError.BindStatementFailed(mysqlErrorCode: UInt32(err), mysqlErrorMessage: errorMessage)
@@ -134,6 +103,54 @@ class MySQLConnection {
         } else {
             return nil
         }
+    }
+    
+    func bindParams(params: [Any?]) throws -> [MYSQL_BIND] {
+        var bindParams = [MYSQL_BIND]()
+        for paramIdx in 0..<params.count {
+            let paramObj = params[paramIdx]
+            var bind = MYSQL_BIND()
+            
+            // Useful type mapping documentation
+            // https://dev.mysql.com/doc/refman/5.7/en/c-api-prepared-statement-type-codes.html
+            
+            switch (paramObj) {
+            case is String:
+                let paramString = paramObj as! String
+                bind.buffer_type = MYSQL_TYPE_VARCHAR
+                bind.buffer_length = UInt(paramString.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+                
+                if let cString = paramString.cStringUsingEncoding(NSUTF8StringEncoding) {
+                    bind.buffer = UnsafeMutablePointer<Void>(strdup(cString))
+                }
+                
+            case is Int:
+                var paramInt64 = Int64(paramObj as! Int)
+                bind.buffer_type = MYSQL_TYPE_LONGLONG
+                bind.buffer_length = 8
+                bind.buffer = UnsafeMutablePointer<Void>(malloc(8))
+                memcpy(bind.buffer, &paramInt64, 8)
+                
+            case is NSDate:
+                let paramDate = paramObj as! NSDate
+                let calendar = NSCalendar.currentCalendar()
+                let dateComponents = calendar.components([NSCalendarUnit.Day, NSCalendarUnit.Month, NSCalendarUnit.Year, NSCalendarUnit.WeekOfYear, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second, NSCalendarUnit.Nanosecond], fromDate: paramDate)
+
+                var mysqlTime = MYSQL_TIME(year: UInt32(dateComponents.year), month: UInt32(dateComponents.month), day: UInt32(dateComponents.day), hour: UInt32(dateComponents.hour), minute: UInt32(dateComponents.minute), second: UInt32(dateComponents.second), second_part: UInt(dateComponents.nanosecond / 1000), neg: Int8(0), time_type: MYSQL_TIMESTAMP_DATETIME)
+                bind.buffer_type = MYSQL_TYPE_DATETIME
+                bind.buffer_length = UInt(sizeof(MYSQL_TIME))
+                bind.buffer = UnsafeMutablePointer<Void>(malloc(sizeof(MYSQL_TIME)))
+                memcpy(bind.buffer, &mysqlTime, Int(bind.buffer_length))
+                
+            default:
+                throw MySQLError.UnsupportedTypeInBind
+            }
+            
+            bindParams.append(bind)
+            free(bind.buffer)
+        }
+        
+        return bindParams
     }
 }
 
