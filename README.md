@@ -13,7 +13,7 @@ classes that connect to MySQL.
 
 ## Current Status
 
-Very early. Lets you connect to the database, and perform queries using String or Int types.
+Approaching usefulness. Lets you connect to the database, and perform queries using basic types.
 
 ## Running
 

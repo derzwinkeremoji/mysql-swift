@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8409EC501C2424600029C20A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8409EC4F1C2424600029C20A /* main.swift */; };
 		84194AE81C2268C100F9A7D6 /* TestQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84194AE71C2268C100F9A7D6 /* TestQueries.swift */; };
 		844A4E831C19359100FED342 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844A4E821C19359100FED342 /* libmysqlclient.18.dylib */; };
 		844A4E841C1935D300FED342 /* libmysqlclient.18.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 844A4E821C19359100FED342 /* libmysqlclient.18.dylib */; };
@@ -18,7 +19,6 @@
 		8464333E1C20248600296E1D /* MySQLField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464333C1C20248600296E1D /* MySQLField.swift */; };
 		84ABB70F1C1C495E0037C366 /* TypesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABB70E1C1C495E0037C366 /* TypesTestCase.swift */; };
 		84D600041C1AEB4C00D13A10 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844A4E821C19359100FED342 /* libmysqlclient.18.dylib */; };
-		84D6002A1C1BDCF200D13A10 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D600271C1BDCF200D13A10 /* main.swift */; };
 		84D6002E1C1BDD1100D13A10 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84D6002B1C1BDD1100D13A10 /* Info.plist */; };
 		84D6002F1C1BDD1100D13A10 /* ConnectionTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6002C1C1BDD1100D13A10 /* ConnectionTestCase.swift */; };
 		84D600301C1BDD1100D13A10 /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6002D1C1BDD1100D13A10 /* TestEnvironment.swift */; };
@@ -38,6 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8409EC4F1C2424600029C20A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = swiftmysql/main.swift; sourceTree = SOURCE_ROOT; };
 		84194AE71C2268C100F9A7D6 /* TestQueries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestQueries.swift; path = swiftmysqltest/TestQueries.swift; sourceTree = SOURCE_ROOT; };
 		844A4E751C192E5300FED342 /* swiftmysql */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftmysql; sourceTree = BUILT_PRODUCTS_DIR; };
 		844A4E821C19359100FED342 /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "/usr/local/mysql-5.6.23-osx10.8-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<absolute>"; };
@@ -46,7 +47,6 @@
 		8464333C1C20248600296E1D /* MySQLField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySQLField.swift; sourceTree = SOURCE_ROOT; };
 		846433451C21912100296E1D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		84ABB70E1C1C495E0037C366 /* TypesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TypesTestCase.swift; path = swiftmysqltest/TypesTestCase.swift; sourceTree = SOURCE_ROOT; };
-		84D600271C1BDCF200D13A10 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = swiftmysql/main.swift; sourceTree = SOURCE_ROOT; };
 		84D600281C1BDCF200D13A10 /* swiftmysql-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "swiftmysql-Bridging-Header.h"; path = "swiftmysql/swiftmysql-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		84D6002B1C1BDD1100D13A10 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = swiftmysqltest/Info.plist; sourceTree = SOURCE_ROOT; };
 		84D6002C1C1BDD1100D13A10 /* ConnectionTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnectionTestCase.swift; path = swiftmysqltest/ConnectionTestCase.swift; sourceTree = SOURCE_ROOT; };
@@ -100,8 +100,8 @@
 				84503DAF1C1BDF4900089F2D /* MySQL.swift */,
 				8464333C1C20248600296E1D /* MySQLField.swift */,
 				846433391C20246F00296E1D /* MySQLResult.swift */,
-				84D600271C1BDCF200D13A10 /* main.swift */,
 				84D600281C1BDCF200D13A10 /* swiftmysql-Bridging-Header.h */,
+				8409EC4F1C2424600029C20A /* main.swift */,
 			);
 			name = swiftmysql;
 			path = syncserver;
@@ -211,8 +211,8 @@
 			files = (
 				8464333A1C20246F00296E1D /* MySQLResult.swift in Sources */,
 				8464333D1C20248600296E1D /* MySQLField.swift in Sources */,
+				8409EC501C2424600029C20A /* main.swift in Sources */,
 				84503DB01C1BDF4900089F2D /* MySQL.swift in Sources */,
-				84D6002A1C1BDCF200D13A10 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
