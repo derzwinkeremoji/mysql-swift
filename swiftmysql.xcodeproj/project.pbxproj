@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		8409EC501C2424600029C20A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8409EC4F1C2424600029C20A /* main.swift */; };
 		84194AE81C2268C100F9A7D6 /* TestQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84194AE71C2268C100F9A7D6 /* TestQueries.swift */; };
-		844A4E831C19359100FED342 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844A4E821C19359100FED342 /* libmysqlclient.18.dylib */; };
-		844A4E841C1935D300FED342 /* libmysqlclient.18.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 844A4E821C19359100FED342 /* libmysqlclient.18.dylib */; };
+		8426EEAA1C6CA701000D59F2 /* libmysqlclient.20.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426EEA91C6CA701000D59F2 /* libmysqlclient.20.dylib */; };
+		8426EEAB1C6CA81B000D59F2 /* libmysqlclient.20.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426EEA91C6CA701000D59F2 /* libmysqlclient.20.dylib */; };
 		84503DB01C1BDF4900089F2D /* MySQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84503DAF1C1BDF4900089F2D /* MySQL.swift */; };
 		84503DB11C1BDF9000089F2D /* MySQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84503DAF1C1BDF4900089F2D /* MySQL.swift */; };
 		8464333A1C20246F00296E1D /* MySQLResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846433391C20246F00296E1D /* MySQLResult.swift */; };
@@ -18,8 +18,6 @@
 		8464333D1C20248600296E1D /* MySQLField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464333C1C20248600296E1D /* MySQLField.swift */; };
 		8464333E1C20248600296E1D /* MySQLField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464333C1C20248600296E1D /* MySQLField.swift */; };
 		84ABB70F1C1C495E0037C366 /* TypesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABB70E1C1C495E0037C366 /* TypesTestCase.swift */; };
-		84D600041C1AEB4C00D13A10 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844A4E821C19359100FED342 /* libmysqlclient.18.dylib */; };
-		84D6002E1C1BDD1100D13A10 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84D6002B1C1BDD1100D13A10 /* Info.plist */; };
 		84D6002F1C1BDD1100D13A10 /* ConnectionTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6002C1C1BDD1100D13A10 /* ConnectionTestCase.swift */; };
 		84D600301C1BDD1100D13A10 /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6002D1C1BDD1100D13A10 /* TestEnvironment.swift */; };
 /* End PBXBuildFile section */
@@ -31,7 +29,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				844A4E841C1935D300FED342 /* libmysqlclient.18.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,8 +37,8 @@
 /* Begin PBXFileReference section */
 		8409EC4F1C2424600029C20A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = swiftmysql/main.swift; sourceTree = SOURCE_ROOT; };
 		84194AE71C2268C100F9A7D6 /* TestQueries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestQueries.swift; path = swiftmysqltest/TestQueries.swift; sourceTree = SOURCE_ROOT; };
+		8426EEA91C6CA701000D59F2 /* libmysqlclient.20.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.20.dylib; path = "../../../../../usr/local/mysql-5.7.10-osx10.9-x86_64/lib/libmysqlclient.20.dylib"; sourceTree = "<group>"; };
 		844A4E751C192E5300FED342 /* swiftmysql */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftmysql; sourceTree = BUILT_PRODUCTS_DIR; };
-		844A4E821C19359100FED342 /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "/usr/local/mysql-5.6.23-osx10.8-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<absolute>"; };
 		84503DAF1C1BDF4900089F2D /* MySQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MySQL.swift; path = swiftmysql/MySQL.swift; sourceTree = SOURCE_ROOT; };
 		846433391C20246F00296E1D /* MySQLResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySQLResult.swift; sourceTree = SOURCE_ROOT; };
 		8464333C1C20248600296E1D /* MySQLField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySQLField.swift; sourceTree = SOURCE_ROOT; };
@@ -59,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				844A4E831C19359100FED342 /* libmysqlclient.18.dylib in Frameworks */,
+				8426EEAA1C6CA701000D59F2 /* libmysqlclient.20.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,7 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84D600041C1AEB4C00D13A10 /* libmysqlclient.18.dylib in Frameworks */,
+				8426EEAB1C6CA81B000D59F2 /* libmysqlclient.20.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,8 +74,8 @@
 		844A4E6C1C192E5300FED342 = {
 			isa = PBXGroup;
 			children = (
+				8426EEA91C6CA701000D59F2 /* libmysqlclient.20.dylib */,
 				846433451C21912100296E1D /* README.md */,
-				844A4E821C19359100FED342 /* libmysqlclient.18.dylib */,
 				844A4E771C192E5300FED342 /* swiftmysql */,
 				84D6FFDF1C1AE5D100D13A10 /* swiftmysqltest */,
 				844A4E761C192E5300FED342 /* Products */,
@@ -164,7 +161,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Fall Day Software Inc.";
 				TargetAttributes = {
 					844A4E741C192E5300FED342 = {
@@ -198,7 +195,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84D6002E1C1BDD1100D13A10 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,9 +313,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				HEADER_SEARCH_PATHS = "/usr/local/mysql-5.6.23-osx10.8-x86_64/include/";
+				HEADER_SEARCH_PATHS = /usr/local/mysql/include/;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "/usr/local/mysql-5.6.23-osx10.8-x86_64/lib";
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/mysql/lib,
+					"/usr/local/mysql-5.7.10-osx10.9-x86_64/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "swiftmysql/swiftmysql-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -330,9 +329,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				HEADER_SEARCH_PATHS = "/usr/local/mysql-5.6.23-osx10.8-x86_64/include/";
+				HEADER_SEARCH_PATHS = /usr/local/mysql/include/;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "/usr/local/mysql-5.6.23-osx10.8-x86_64/lib";
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/mysql/lib,
+					"/usr/local/mysql-5.7.10-osx10.9-x86_64/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "swiftmysql/swiftmysql-Bridging-Header.h";
 			};
@@ -342,12 +344,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				HEADER_SEARCH_PATHS = "/usr/local/mysql-5.6.23-osx10.8-x86_64/include/";
+				HEADER_SEARCH_PATHS = /usr/local/mysql/include/;
 				INFOPLIST_FILE = swiftmysqltest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"/usr/local/mysql-5.6.23-osx10.8-x86_64/lib/",
-					"/usr/local/mysql-5.6.23-osx10.8-x86_64/lib",
+					/usr/local/mysql/lib/,
+					"/usr/local/mysql-5.7.10-osx10.9-x86_64/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.falldaysoftware.swiftmysql;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -359,12 +361,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				HEADER_SEARCH_PATHS = "/usr/local/mysql-5.6.23-osx10.8-x86_64/include/";
+				HEADER_SEARCH_PATHS = /usr/local/mysql/include/;
 				INFOPLIST_FILE = swiftmysqltest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"/usr/local/mysql-5.6.23-osx10.8-x86_64/lib/",
-					"/usr/local/mysql-5.6.23-osx10.8-x86_64/lib",
+					/usr/local/mysql/lib/,
+					"/usr/local/mysql-5.7.10-osx10.9-x86_64/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.falldaysoftware.swiftmysql;
 				PRODUCT_NAME = "$(TARGET_NAME)";

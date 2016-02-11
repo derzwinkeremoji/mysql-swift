@@ -50,6 +50,9 @@ class MySQLResult {
                     dateFmt.timeZone = NSTimeZone.defaultTimeZone()
                     dateFmt.dateFormat = "yyyy-MM-dd hh:mm:ss"
                     dict[field.name] = dateFmt.dateFromString(stringValue)!
+                case MYSQL_TYPE_BLOB:
+                    let data = row_data(rowBytes, fieldIndex: fieldIdx)
+                    dict[field.name] = data
                 
                 default:
                     throw MySQLConnection.MySQLError.UnsupportedTypeInResult(fieldName: field.name, type: field.type)
@@ -57,6 +60,14 @@ class MySQLResult {
         }
         
         return dict
+    }
+    
+    func row_data(bytes: UnsafeMutablePointer<Int8>, fieldIndex: Int) -> NSData {
+        let lengths = UnsafeMutablePointer<UInt64>(mysql_fetch_lengths(mysql_res))
+        let fieldLength = Int(lengths[fieldIndex])
+        let data = NSData(bytes: bytes, length: fieldLength)
+
+        return data
     }
 }
 

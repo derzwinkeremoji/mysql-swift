@@ -80,4 +80,18 @@ class TypesTestCase: XCTestCase {
             assert(interval.second == 0)
         }
     }
+    
+    func testBlob() {
+        var bytes = [UInt8]()
+        for i in 0...255 {
+            bytes.append(UInt8(i))
+        }
+        assert(bytes.count == 256)
+        let testData = NSData(bytes: UnsafeMutablePointer<Void>(bytes), length: 256)
+        try! dbconn.query("INSERT INTO test_types (col_blob) VALUES (?)", params: [testData])
+        let result = try! dbconn.query("SELECT col_blob FROM test_types")
+        let row = try! result?.fetchRow()
+        let col = row?["col_blob"] as! NSData
+        assert(col.isEqualToData(testData))
+    }
 }

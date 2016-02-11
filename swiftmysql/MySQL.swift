@@ -22,9 +22,11 @@ class MySQLConnection {
     }
     
     let conn = mysql_init(nil)
+    var bindBuffers = [UnsafeMutablePointer<Void>]()
     
     func connect(host: String, user: String, password: String, database: String, port: UInt32 = 0, flags: UInt = 0) throws {
-        if (mysql_real_connect(conn, host, user, password, database, port, nil, flags) == nil) {
+        let result = mysql_real_connect(conn, host, user, password, database, port, nil, flags)
+        if (result == nil) {
             throw MySQLError.ConnectFailed
         }
     }
@@ -90,7 +92,13 @@ class MySQLConnection {
             let errorMessage = String.fromCString(mysql_stmt_error(statement)) ?? "Unknown error"
             throw MySQLError.ExecuteStatementFailed(mysqlErrorCode: UInt32(err), mysqlErrorMessage: errorMessage)
         }
-        
+
+        // Release allocated buffers now that we've bound the parameters
+        for ptr in bindBuffers {
+            free(ptr)
+        }
+        bindBuffers.removeAll()
+
         if (mysql_field_count(conn) > 0) {
             let mysql_res = mysql_store_result(conn)
             if mysql_res == nil {
@@ -123,6 +131,7 @@ class MySQLConnection {
                 if let cString = paramString.cStringUsingEncoding(NSUTF8StringEncoding) {
                     bind.buffer = UnsafeMutablePointer<Void>(strdup(cString))
                 }
+                bindBuffers.append(bind.buffer)
                 
             case is Int:
                 var paramInt64 = Int64(paramObj as! Int)
@@ -130,6 +139,7 @@ class MySQLConnection {
                 bind.buffer_length = 8
                 bind.buffer = UnsafeMutablePointer<Void>(malloc(8))
                 memcpy(bind.buffer, &paramInt64, 8)
+                bindBuffers.append(bind.buffer)
                 
             case is NSDate:
                 let paramDate = paramObj as! NSDate
@@ -141,13 +151,19 @@ class MySQLConnection {
                 bind.buffer_length = UInt(sizeof(MYSQL_TIME))
                 bind.buffer = UnsafeMutablePointer<Void>(malloc(sizeof(MYSQL_TIME)))
                 memcpy(bind.buffer, &mysqlTime, Int(bind.buffer_length))
+                bindBuffers.append(bind.buffer)
+
+            case is NSData:
+                let paramData = paramObj as! NSData
+                bind.buffer_type = MYSQL_TYPE_BLOB
+                bind.buffer_length = UInt(paramData.length)
+                bind.buffer = UnsafeMutablePointer<Void>(paramData.bytes)
                 
             default:
                 throw MySQLError.UnsupportedTypeInBind
             }
             
             bindParams.append(bind)
-            free(bind.buffer)
         }
         
         return bindParams
