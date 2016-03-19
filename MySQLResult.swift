@@ -48,7 +48,8 @@ class MySQLResult {
                 case MYSQL_TYPE_DATETIME:
                     let dateFmt = NSDateFormatter()
                     dateFmt.timeZone = NSTimeZone.defaultTimeZone()
-                    dateFmt.dateFormat = "yyyy-MM-dd hh:mm:ss"
+                    dateFmt.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    dateFmt.locale = NSLocale(localeIdentifier: "en_us")
                     dict[field.name] = dateFmt.dateFromString(stringValue)!
                 case MYSQL_TYPE_BLOB:
                     let data = row_data(rowBytes, fieldIndex: fieldIdx)
